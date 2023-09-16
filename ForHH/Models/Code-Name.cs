@@ -27,10 +27,10 @@ namespace ForHH.Models
         [DisplayName("Категория процесса")]
         public string Category { get; set; }
     }
-    public class Name_Division
+    public class Code_Division
     {
-        [DisplayName("Наименование процесса")]
-        public string Name { get; set; }
+        [DisplayName("Код процесса")]
+        public string Code { get; set; }
         [DisplayName("Подразделение-владелец процесса")]
         public string? Division { get; set; }
     }

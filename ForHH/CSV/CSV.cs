@@ -34,8 +34,7 @@ namespace ForHH.CSV
                         var cells = line.Split(';').ToList();
                         if (HasRowsData(cells))
                         {
-                            lienes.Add(cells);
-                            Console.WriteLine(line);
+                            lienes.Add(cells);                            
                         }
 
 
@@ -84,23 +83,23 @@ namespace ForHH.CSV
 
             return code_category;
         }
-        public static List<Name_Division> Get_Name_Division(List<List<string>> list_cells)
+        public static List<Code_Division> Get_Name_Division(List<List<string>> list_cells)
         {
-            List<Name_Division> code_category = new List<Name_Division>();
+            List<Code_Division> code_division = new List<Code_Division>();
             foreach (var cell in list_cells)
             {
 
-                Name_Division new_code = new Name_Division() { Name = cell[2], Division = cell[3] };
-                code_category.Add(new_code);
+                Code_Division new_code = new Code_Division() { Code = cell[1], Division = cell[3] };
+                code_division.Add(new_code);
             }
-            code_category = code_category.OrderBy(x => x.Name).ToList();
-            var r = from p in code_category
-                    orderby p.Division descending
+            code_division = code_division.OrderBy(x => x.Code).ToList();
+            var r = from p in code_division
+                    orderby p.Division 
                     select p;
-            code_category = r.ToList();
-            return code_category;
+            code_division = r.ToList();
+            return code_division;
         }
-        public static bool WriteDivisionCSV(List<Name_Division> divisions, string path)
+        public static bool WriteDivisionCSV(List<Code_Division> divisions, string path)
         {
             try
             {
@@ -113,15 +112,23 @@ namespace ForHH.CSV
                     {
                         if (i == 0)
                         {
-                            string displayNameDivision = PropDisplayName(typeof(Name_Division), nameof(Name_Division.Division));
-                            string displayNameName = PropDisplayName(typeof(Name_Division), nameof(Name_Division.Name));
-                            writer.WriteLine($"{displayNameDivision};{displayNameName}");
+                            string displayNameDivision = PropDisplayName(typeof(Code_Division), nameof(Code_Division.Division));
+                            string displayNameCode = PropDisplayName(typeof(Code_Division), nameof(Code_Division.Code));
+                            writer.WriteLine($"{displayNameDivision};{displayNameCode}");
                             i++;
                             continue;
                         }
-                        writer.Write($"{division.Division};{division.Name}");
-
-                        writer.WriteLine();
+                        else
+                        {
+                            if(division.Division!= "")
+                            {
+                                writer.Write($"{division.Division};{division.Code}");
+                                writer.WriteLine();
+                                
+                            }
+                            
+                        }
+                        
                     }
                     Console.WriteLine($"CSV файл создан (UTF-8,CSV), по пути {path}");
                     return true;
